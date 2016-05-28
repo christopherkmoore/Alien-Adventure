@@ -46,7 +46,7 @@ class SettingsViewController: UIViewController {
         showBadgesSwitch.addTarget(self, action: Selector("showBadges:"), forControlEvents: .ValueChanged)
         levelSegmentedControl.addTarget(self, action: Selector("switchLevel:"), forControlEvents: .ValueChanged)
 
-        print("adding targets!")
+        //print("adding targets!")
     }
     
     // MARK: Implementing Actions

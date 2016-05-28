@@ -9,8 +9,34 @@
 extension Hero {
     
     func policingItems(inventory: [UDItem], policingFilter: UDItem throws -> Void) -> [UDPolicingError:Int] {
-        return [UDPolicingError:Int]()
-    }    
+        
+        var errorLog: [UDPolicingError:Int] = [UDPolicingError.NameContainsLaser: 0, UDPolicingError.ItemFromCunia: 0, UDPolicingError.ValueLessThan10: 0]
+        var nameContainsLazerrr = 0
+        var valueLessThanTen = 0
+        var itemFromCunia = 0
+        
+        for item in inventory {
+            if item.name.lowercaseString.containsString("laser") {
+                nameContainsLazerrr += 1
+                errorLog[.NameContainsLaser] = nameContainsLazerrr
+            }
+            else if let planetOrigin = item.historicalData["PlanetOfOrigin"] as? String where planetOrigin.lowercaseString == "cunia" {
+                itemFromCunia += 1
+                errorLog[.ItemFromCunia] = itemFromCunia
+                }
+            else if item.baseValue < 10 {
+                valueLessThanTen += 1
+                errorLog[.ValueLessThan10] = valueLessThanTen
+            }
+            else if inventory.count == 0 {
+
+                return errorLog
+            }
+        }
+//        print(errorLog)
+        return errorLog
+    }
+    
 }
 
 // If you have completed this function and it is working correctly, feel free to skip this part of the adventure by opening the "Under the Hood" folder, and making the following change in Settings.swift: "static var RequestsToSkip = 1"
