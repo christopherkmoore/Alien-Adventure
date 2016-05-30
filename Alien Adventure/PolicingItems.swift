@@ -16,24 +16,32 @@ extension Hero {
         var itemFromCunia = 0
         
         for item in inventory {
-            if item.name.lowercaseString.containsString("laser") {
+            do {
+                try policingFilter(item)
+                    UDPolicingError.NameContainsLaser
+            } catch UDPolicingError.NameContainsLaser {
+                if item.name.lowercaseString.containsString("laser") {
                 nameContainsLazerrr += 1
                 errorLog[.NameContainsLaser] = nameContainsLazerrr
-            }
-            else if let planetOrigin = item.historicalData["PlanetOfOrigin"] as? String where planetOrigin.lowercaseString == "cunia" {
-                itemFromCunia += 1
-                errorLog[.ItemFromCunia] = itemFromCunia
                 }
-            else if item.baseValue < 10 {
-                valueLessThanTen += 1
-                errorLog[.ValueLessThan10] = valueLessThanTen
-            }
-            else if inventory.count == 0 {
-
-                return errorLog
+            } catch UDPolicingError.ItemFromCunia {
+                if let planetOrigin = item.historicalData["PlanetOfOrigin"] as? String where planetOrigin.lowercaseString == "cunia" {
+                    itemFromCunia += 1
+                    errorLog[.ItemFromCunia] = itemFromCunia
+                }
+                
+            } catch UDPolicingError.ValueLessThan10 {
+                if item.baseValue < 10 {
+                    valueLessThanTen += 1
+                    errorLog[.ValueLessThan10] = valueLessThanTen
+                }
+                
+            } catch {
+                print("Error not found. You messed up alot")
             }
         }
-//        print(errorLog)
+
+        print(errorLog)
         return errorLog
     }
     
